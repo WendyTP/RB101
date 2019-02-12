@@ -1,4 +1,4 @@
-# improvement 2 : Better number validation, including float number
+# improvement 3: Amend operation_to_message method
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -16,7 +16,7 @@ def valid_number(number)
 end
 
 def operation_to_message(op)
-  case op
+  message= case op
   when '1'
     "Adding"
   when '2'
@@ -26,6 +26,7 @@ def operation_to_message(op)
   when '4'
     "Dividing"
   end
+  message
 end
 
 prompt("Welcome! Enter your name:")
