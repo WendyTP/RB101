@@ -1,11 +1,18 @@
-# improvement : Better integer validation
-# Additional : handle divison with 0 by keeping the 4th scenario loop condition inside case
+# improvement 2 : Better number validation, including float number
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-def valid_number(number)
+def integer?(number)
   number.to_i.to_s == number
+end
+
+def float?(number)
+  number.to_f.to_s == number
+end
+
+def valid_number(number)
+  integer?(number) || float?(number)
 end
 
 def operation_to_message(op)
@@ -86,11 +93,11 @@ loop do # main loop
 
   result = case operator
            when '1'
-            number1.to_i() + number2.to_i()
+            number1.to_f() + number2.to_f()
            when '2'
-            number1.to_i() - number2.to_i()
+            number1.to_f() - number2.to_f()
            when '3'
-            number1.to_i() * number2.to_i()
+            number1.to_f() * number2.to_f()
            when '4' 
             while !(valid_number(number2) && (number2!= "0"))
               prompt("Sorry, divider can not be 0. Please give another number:")
