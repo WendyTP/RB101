@@ -1,8 +1,14 @@
-# improvement 4: extract messages into a ymal file, except message containing string interpolation
-# Remove the HEREDOC of operator_prompt, and replace with strings in ymal file.
+# improvement 5: Adding different langauge selection and move the string interpolation message to ymal file
+
 require 'yaml'
+
+LANGUAGE = 'fr'
 MESSAGES = YAML.load_file('calculator_messages.yml')
-# puts MESSAGES.inspect
+
+def message(key)
+  MESSAGES[LANGUAGE][key]
+end
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -20,60 +26,60 @@ def valid_number(number)
 end
 
 def operation_to_message(op)
-  message= case op
+  input_choice= case op
   when '1'
-    "Adding"
+    message('adding')
   when '2'
-    "Subtracting"
+    message('subtracting')
   when '3'
-    "Multiplying"
+    message('multiplying')
   when '4'
-    "Dividing"
+    message('dividing')
   end
-  message
+  input_choice
 end
 
-prompt(MESSAGES['welcome'])
+prompt(message('welcome'))
 
 name = ''
 loop do
   name = Kernel.gets().chomp()
   if name.empty?()
-    prompt(MESSAGES['valid_name'])
+    prompt(message('valid_name'))
   else
     break
   end
 end
 
-prompt("Hi, #{name}")
+prompt("#{message('hi')} #{name}")
 
 loop do # main loop
 
   number1 = ''
   loop do
-    prompt(MESSAGES['first_number'])
+    prompt(message('first_number'))
     number1 = Kernel.gets().chomp()
 
     if valid_number(number1)
       break
     else
-      prompt(MESSAGES['warning'])
+      prompt(message('warning'))
     end
   end
 
   number2 = ''
   loop do
-    prompt(MESSAGES['second_number'])
+    prompt(message('second_number'))
     number2 = Kernel.gets().chomp()
     if valid_number(number2)
       break
     else
-      prompt(MESSAGES['warning'])
+      prompt(message('warning'))
     end
   end
 
 
-  prompt(MESSAGES['operator_prompt'])
+  prompt(message('operator_prompt'))
 
   operator = ''
   loop do
@@ -81,11 +87,11 @@ loop do # main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['valid_choice'])
+      prompt(message('valid_choice'))
     end
   end
 
-  prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt("#{operation_to_message(operator)} #{message('operation_to_message_following')}")
 
   result = case operator
            when '1'
@@ -96,7 +102,7 @@ loop do # main loop
             number1.to_f() * number2.to_f()
            when '4' 
             while !(valid_number(number2) && (number2!= "0"))
-              prompt(MESSAGES['divider_0_warning'])
+              prompt(message('divider_0_warning'))
               number2 = Kernel.gets().chomp()
             end 
             number1.to_f() / number2.to_f()
@@ -106,12 +112,12 @@ loop do # main loop
           
              
 
-  prompt("The result is #{result}")
+  prompt("#{message('result')} #{result}")
 
-  prompt(MESSAGES['play_again'])
+  prompt(message('play_again'))
   answer = Kernel.gets().chomp()
   break unless answer.downcase().start_with?('y')
 
 end # main loop finish
 
-prompt(MESSAGES['goodbye'])
+prompt(message('goodbye'))

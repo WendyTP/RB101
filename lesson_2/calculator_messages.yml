@@ -1,17 +1,49 @@
 # Extract all messages from calculator_bonus_1.2.rb
+# Include different language translation
+en:
+  welcome: "Welcome! Enter your name:"
+  valid_name: "Make sure to use a valid name."
+  hi: "Hi, "
+  first_number: "What's the first number?"
+  warning: "This doesn't look like a valid number"
+  second_number: "What's the second number?"
+  operator_prompt: >-
+    What operation would you like to perform?
+      1) add
+      2) subtract
+      3) multiply
+      4) divide
+  adding: "Adding"
+  subtracting: "Subtracting"
+  multiplying: "Multiplying"
+  dividing: "Dividing"
+  valid_choice: "Must choose 1,2,3 or 4"
+  operation_to_message_following: "the two numbers..."
+  divider_0_warning: "Sorry, divisor can not be 0. Please give another number:"
+  result: "The result is"
+  play_again: "Do you want to perfom another calculation? (Type y to calculate again)"
+  goodbye: "Thank you & Good bye!"
 
-welcome: "Welcome! Enter your name:"
-valid_name: "Make sure to use a valid name."
-first_number: "What's the first number?"
-warning: "This doesn't look like a valid number"
-second_number: "What's the second number?"
-operator_prompt: >-
-  What operation would you like to perform?
-    1) add
-    2) subtract
-    3) multiply
-    4) divide
-valid_choice: "Must choose 1,2,3 or 4"
-divider_0_warning: "Sorry, divider can not be 0. Please give another number:"
-play_again: "Do you want to perfom another calculation? (Type y to calculate again)"
-goodbye: "Thank you & Good bye!"
+fr:  
+  welcome: "Bienvenue! Veuillez entrer votre nom:"
+  valid_name: "Assurez-vous d'entrer un nom valide."
+  hi: "Bonjour,"
+  first_number: "Quel est le premier numéro?"
+  warning: "Ce n'est pas un numéro valide"
+  second_number: "Quel est le deuxième numéro?"
+  operator_prompt: >-
+      Quelle opération aimeriez-vous faire?
+        1) addition
+        2) soustraction
+        3) multiplication
+        4) division
+  adding: "En additionnant"
+  subtracting: "En soustrayant"
+  multiplying: "En multipliant"
+  dividing: "En divisant"
+  valid_choice: "Vous devez choisir entre 1,2,3 ou 4"
+  operation_to_message_following: "les deux numéros..."
+  divider_0_warning: "Désolé, le diviseur ne peut pas être 0. Veuillez entre un autre numéro:"             
+  result: "Le résultat est"
+  play_again: "Voulez-vous faire un autre calcul? (Tapez y pour continuer)"
+  goodbye: "Merci & Au revoir!"
