@@ -1,10 +1,27 @@
 
+require 'yaml'
+LANGUAGE = 'en'
+MESSAGES = YAML.load_file('mortgage_calculator_message.yml')
+
+
+def message(key)
+  MESSAGES[LANGUAGE][key]
+end
+
+def prompt(message)
+puts "=> #{message}"
+end 
+
+def valid_name?(name)
+/\w/.match(name)
+end
+
 def integer?(number)
-  number.to_i.to_s == number
+  /^\d+$/.match(number)
 end
 
 def float?(number)
-  number.to_f.to_s == number
+  /\d/.match(number) && /^\d*\.?\d*$/.match(number)
 end
 
 def valid_number?(number)
@@ -14,40 +31,57 @@ end
 def valid_number_apr?(number)
   (integer?(number) || float?(number)) && (number.to_f >= 0)
 end
-puts "Welcome! This is a mortgage calculator."
+
+
+prompt(message('welcome'))
+
+name = nil
+loop do
+  name = gets.chomp
+  if valid_name?(name)
+    break
+  else
+    prompt(message('valid_name'))
+  end   
+end
+
 
 loop do # main loop
 
   user_loan_amount = nil
   loop do
-    puts "Please provide your loan amount: "
+  
+  prompt(message('loan_amount'))
     user_loan_amount = gets.chomp
     if valid_number?(user_loan_amount) 
       break
     else
-      puts "This is not a valid number."  
+    
+    prompt(message('valid_number')) 
     end  
   end
 
   user_apr = nil
   loop do  
-    puts "What percentage is your Annual Percentage Rate? (no need to enter %)"
+  
+  prompt(message('apr'))
     user_apr = gets.chomp
     if valid_number_apr?(user_apr)
       break
     else
-      puts "This is not a valid number."  
+      prompt(message('valid_number')) 
     end  
   end
 
   user_loan_year = nil
   loop do
-    puts "How many years is this loan for? (no need to enter the word year)"
+  
+  prompt(message('loan_year'))
     user_loan_year = gets.chomp
     if valid_number?(user_loan_year)
       break
     else
-      puts "This is not a valid number."  
+      prompt(message('valid_number'))  
     end  
   end
 
@@ -65,13 +99,17 @@ loop do # main loop
     monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-loan_month)))
   end
 
-  puts "Your monthly interst rate is #{monthly_interest_percentage.round(2)}%"
-  puts "Your loan duration is #{loan_month.round} months."
-  puts "Your monthly payment is #{monthly_payment.round(2)}."
 
-  puts "Would you like to do another calculation? (type y to continue.) "
+prompt "#{message('monthly_interest_message')} #{monthly_interest_percentage.round(2)}%"
+
+prompt "#{message('loan_duration_message')} #{loan_month.round} #{message('loan_duration_trail')}"
+
+prompt "#{message('monthly_payment_message')} #{monthly_payment.round(2)}"
+
+prompt(message('continue_calculation'))
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
 end  # main loop end
-puts "Thank you & goodbye!"
+
+prompt(message('goodbye'))
 
