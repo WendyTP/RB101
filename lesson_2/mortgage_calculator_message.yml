@@ -1,0 +1,29 @@
+# Extract all messages from mortgage.calculator.rb
+# include different languages
+en:
+  welcome: "Welcome! This is a mortgage calculator. Please enter your name:"
+  valid_name: "This is not a valid name. Pleas re-enter:"
+  loan_amount: "Please provide your loan amount: "
+  valid_number: "This is not a valid number."
+  apr: "What percentage is your Annual Percentage Rate? (no need to enter %)"
+  loan_year: "How many years is this loan for? (no need to enter the word year)"
+  monthly_interest_message: "Your monthly interst rate is"
+  loan_duration_message: "Your loan duration is"
+  loan_duration_trail: "months"
+  monthly_payment_message: "Your monthly payment is"
+  continue_calculation: "Would you like to do another calculation? (type y to continue.)"
+  goodbye: "Thank you & goodbye!"
+
+fr:
+  welcome: "Bienvenue. C'est une calculatrice de emprunt immobilier . Veuillez entrer votre nom:"
+  valid_name: "Assurez-vous d'entrer un nom valide."
+  loan_amount: "Quel est votre montant du prêt?"
+  valid_number: "Ce n'est pas un numéro valide."
+  apr: "Quel est le TAEG sur votre prêt? (pas besoin d'entrer le symbole %)"
+  loan_year: "Combien d'années dure votre emprunt ? (pas besoin d'entrer le mot an)"
+  monthly_interest_message: "Le taux d'intérêt mensuel est"
+  loan_duration_message: "L'emprunt dure"
+  loan_duration_trail: "mois"
+  monthly_payment_message: "Le remboursement mensule est "
+  continue_calculation: "Aimeriez-vous faire un autre calcul? (tappez y pour continuer.)"
+  goodbye: "Merci & au revoir!"
