@@ -1,0 +1,30 @@
+en:
+  get_user_input: "Enter r for rock, p for paper, sc for scissor, l for lizard, and sp for spock"
+  valid_choice: "That's not a valid choice."
+  you_won: "You won!"
+  computer_won: "Computer won!"
+  tie: "It's a tie!"
+  welcome: "Hello, welcome to rock-paper-scissors-lizard-spock game!"
+  game_rules: >-
+    
+    1. This is the extended version of rock-paper-scissors game.
+
+      2. You will play with the computer. Each win gains 1 point,
+         and the frist one reaches 5 points will be the winner.
+
+      3. The following are the rules
+        * scissors cuts paper ; paper covers rock ;
+        * rock crushes lizard ; lizard poisons spock ;
+        * spock smashes scissors ; scissors decapitates lizard ;
+        * lizard eats paper ; paper disproves spock ;
+        * spock vaporizes rock ; rock crushes scissors
+        
+  start_game: "Start the game: user: 0 point; computer: 0 point."
+  you_chose: "You chose"
+  computer_chose: "Computer chose"
+  your_current_score: "your current score is"
+  computer_current_score: "computer current score is"
+  you_grand_winner: "You are the grand winner!"
+  computer_grand_winner: "Computer is the grand winner!"
+  continue: "Do you want to play again? Enter y to continue"
+  goodbye: "Thank you for palying. Good bye!"

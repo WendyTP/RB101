@@ -1,21 +1,33 @@
+require 'yaml'
+LANGUAGE = 'en'
+MESSAGES = YAML.load_file('rps_bonus_feature.yml')
+
 VALID_CHOICES = ["rock", "paper", "scissors", "lizard", "spock"]
-SIMPLIFIED_VALID_CHOICES = ["r", "p", "sc", "l", "sp"]
+USER_VALID_CHOICES = ["r", "p", "sc", "l", "sp"]
+WINNING_CONDITIONS = { "scissors" => ["paper", "lizard"],
+                       "paper" => ["rock", "spock"],
+                       "rock" => ["lizard", "scissors"],
+                       "lizard" => ["spock", "paper"],
+                       "spock" => ["scissors", "rock"] }
+
+def message(key)
+  MESSAGES[LANGUAGE][key]
+end
 
 def prompt(message)
   puts("=> #{message}")
 end
 
-def get_user_input
+def receive_user_input
   user_input = ""
   loop do
-    prompt("Enter r for rock, p for paper, sc for scissor,
-    l for lizard, and sp for spock")
+    prompt(message('get_user_input'))
     user_input = gets.chomp.downcase
 
-    if SIMPLIFIED_VALID_CHOICES.include?(user_input)
+    if USER_VALID_CHOICES.include?(user_input)
       break
     else
-      prompt("That's not a valid choice.")
+      prompt(message('valid_choice'))
     end
   end
   user_input
@@ -31,74 +43,54 @@ def convert_user_input(input)
   end
 end
 
-def win?(first, second)
-  (first == "scissors" && (second == "paper" || second == "lizard")) ||
-    (first == "paper" && (second == "rock" || second == "spock")) ||
-    (first == "rock" && (second == "lizard" || second == "scissors")) ||
-    (first == "lizard" && (second == "spock" || second == "paper")) ||
-    (first == "spock" && (second == "scissors" || second == "rock"))
-end
-
-def display_result(player, computer)
-  if win?(player, computer)
-    "You won!"
-  elsif win?(computer, player)
-    "Computer won!"
+def result(player, computer)
+  if WINNING_CONDITIONS[player].include?(computer)
+    message('you_won')
+  elsif WINNING_CONDITIONS[computer].include?(player)
+    message('computer_won')
   else
-    "It's a tie!"
+    message('tie')
   end
 end
 
-prompt("Hello, welcome to rock-paper-scissors-lizard-spock game!")
-
-game_rule_prompt = <<-RULES
-  1. This is the extended version of rock-paper-scissors game.
-  2. You will play with the computer. Each win gains 1 point,
-     and the frist one reaches 5 points will be the winner.
-  3. The following are the rules:
-     * scissors cuts paper ; paper covers rock ;
-     * rock crushes lizard ; lizard poisons spock ;
-     * spock smashes scissors ; scissors decapitates lizard ;
-     * lizard eats paper ; paper disproves spock ;
-     * spock vaporizes rock ; rock crushes scissors
-
-RULES
-
-prompt(game_rule_prompt)
+prompt(message('welcome'))
+prompt(message('game_rules'))
 
 loop do # main loop
-  prompt("Start the game: user: 0 point; computer: 0 point.")
+  prompt(message('start_game'))
 
   user_score = 0
   computer_score = 0
 
   while user_score < 5 && computer_score < 5 # game loop
-    user_input = get_user_input
-    choice = convert_user_input(user_input)
-    computer = VALID_CHOICES.sample
+    simplified_input = receive_user_input
+    choice = convert_user_input(simplified_input)
+    computer_choice = VALID_CHOICES.sample
+    display_result = result(choice, computer_choice)
 
-    prompt("You chose #{choice}; Computer chose: #{computer}")
-    prompt(display_result(choice, computer).to_s)
+    prompt("#{message('you_chose')} #{choice};
+    #{message('computer_chose')} #{computer_choice}")
+    prompt(display_result.to_s)
 
-    if win?(choice, computer)
+    if display_result == "You won!"
       user_score += 1
-    elsif win?(computer, choice)
+    elsif display_result == "Computer won!"
       computer_score += 1
     end
 
-    prompt("your current score is #{user_score};
-    computer current score is #{computer_score}")
+    prompt("#{message('your_current_score')} #{user_score};
+    #{message('computer_current_score')} #{computer_score}")
   end # game loop end
 
   if user_score > computer_score
-    prompt("You are the grand winner!")
+    prompt(message('you_grand_winner'))
   elsif computer_score > user_score
-    prompt("Computer is the grand winner!")
+    prompt(message('computer_grand_winner'))
   end
 
-  prompt("Do you want to play again?")
+  prompt(message('continue'))
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
 end # main loop end
 
-prompt("Thank you for palying. Good bye!")
+prompt(message('goodbye'))
