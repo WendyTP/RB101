@@ -53,6 +53,10 @@ def result(player, computer)
   end
 end
 
+def clear_terminal
+  system('clear') || system('cls')
+end
+
 prompt(message('welcome'))
 prompt(message('game_rules'))
 
@@ -77,9 +81,10 @@ loop do # main loop
     elsif display_result == "Computer won!"
       computer_score += 1
     end
-
+  
     prompt("#{message('your_current_score')} #{user_score};
     #{message('computer_current_score')} #{computer_score}")
+   
   end # game loop end
 
   if user_score > computer_score
@@ -91,6 +96,9 @@ loop do # main loop
   prompt(message('continue'))
   answer = gets.chomp
   break unless answer.downcase.start_with?("y")
+
+clear_terminal
+
 end # main loop end
 
 prompt(message('goodbye'))
