@@ -6,23 +6,17 @@ munsters = {
   "Marilyn" => { "age" => 23, "gender" => "female"}
 }
 
-munster_copy = munsters 
 
 def mess_with_demographics(demo_hash)
-    new_hashes = demo_hash
-    puts demo_hash.object_id
-    puts new_hashes.object_id
     demo_hash.values.each do |family_member|
-      puts "#{family_member["age"].object_id}" + "first"
-      family_member["age"] += 42
-      puts "#{family_member["age"].object_id}" + "second"
-      family_member["gender"] = "other"
-  end
-    puts demo_hash.object_id
+    family_member["age"] += 42
+    family_member["gender"] = "other"
+    end
   
+    
 end
 
-p mess_with_demographics(munster_copy)
+p mess_with_demographics(munsters)
 p munsters
 =begin
 The data in munsters is changed following the above method invocation.
