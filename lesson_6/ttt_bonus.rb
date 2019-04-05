@@ -67,7 +67,6 @@ def player_choose_playing_order
   end
 end
 
-
 def first_player
   case PLAYING_ORDERS.sample
   when "Choose" then player_choose_playing_order
@@ -80,36 +79,50 @@ def valid_square_input?(square)
   /^\d$/.match(square)
 end
 
-
 def player_places_piece(brd)
   square = ""
   loop do
     prompt "Choose a square (#{joinor(empty_squares(brd))}):"
     square = gets.chomp
-    break if valid_square_input?(square) && empty_squares(brd).include?(square.to_i)
+    break if valid_square_input?(square) &&
+             empty_squares(brd).include?(square.to_i)
     prompt "Sorry, that's not a valid choice"
   end
-  brd[square] = PLAYER_MARKER
+  brd[square.to_i] = PLAYER_MARKER
 end
 
 def find_at_risk_square(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
-    brd.select { |key, value| line.include?(key) && value == INITIAL_MARKER }.keys.first
+    brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
+  else
+    nil
   end
-  nil
 end
 
-def coumper_places_piece(brd)
+def computer_offense_move(brd,marker)
   square = nil
   WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    square = find_at_risk_square(line, brd, marker)
     break if square
   end
+  square
+end  
+
+
+def computer_defense_move(brd,marker)
+  square = nil
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, marker)
+    break if square
+  end
+  square
+end
+
+
+def computer_places_piece(brd)
+  square = computer_offense_move(brd,COMPUTER_MARKER)
   if !square
-    WINNING_LINES.each do |line|
-      square = find_at_risk_square(line, brd, PLAYER_MARKER)
-      break if square
-    end
+    square = computer_defense_move(brd, PLAYER_MARKER)
   end
   if !square
     if empty_squares(brd).include?(5)
@@ -124,7 +137,7 @@ end
 def place_piece!(brd, current_player)
   case current_player
   when "Player" then player_places_piece(brd)
-  when "Computer" then coumper_places_piece(brd)
+  when "Computer" then computer_places_piece(brd)
   end
 end
 
@@ -156,7 +169,7 @@ def display_current_score(scores)
   scores.each do |person, score|
     prompt"#{person} current score is #{score}"
   end
-end 
+end
 
 def first_reached_5_wins(scores)
   if scores["Player"] >= 5
@@ -178,14 +191,12 @@ def play_again_answer
   answer
 end
 
-
-
 scoring = { "Player" => 0, "Computer" => 0 }
 
 loop do # main game loop
   board = initialize_board
   current_player = first_player
-  
+
   loop do
     display_board(board)
     place_piece!(board, current_player)
@@ -213,4 +224,3 @@ loop do # main game loop
 end
 
 prompt "Thanks for playing! Goodbye!"
-
