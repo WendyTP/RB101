@@ -31,7 +31,7 @@ def initialize_deck
   new_deck
 end
 
-def assigning_card(dec)
+def assigning_card!(dec)
   select_suit_type =dec.keys.sample
   selected_suits = dec[select_suit_type]
   assigned_card = selected_suits.sample
@@ -115,8 +115,8 @@ loop do  # main loop
   dealer_cards =[]
 
   2.times do
-    player_cards << assigning_card(deck)
-    dealer_cards << assigning_card(deck)
+    player_cards << assigning_card!(deck)
+    dealer_cards << assigning_card!(deck)
   end
 
   prompt "Dealer has #{dealer_cards[0]} and ?"
@@ -127,7 +127,7 @@ loop do  # main loop
   loop do
     player_turn = player_turn_choice
     if player_turn == "h"
-      player_cards << assigning_card(deck)
+      player_cards << assigning_card!(deck)
       prompt "You chose to hit"
       prompt "Your cards are now: #{player_cards}"
       prompt "Your total is now: #{total(player_cards)}"
@@ -143,13 +143,15 @@ loop do  # main loop
     prompt "You chose to stay at #{total(player_cards)}."
   end
 
+  clear_screen
+  
   # dealer turn
   prompt "Dealer's turn now ..."
   loop do  # break if busted or stay
     break if total(dealer_cards) >= 17
 
     prompt "dealer hits..."
-    dealer_cards << assigning_card(deck)
+    dealer_cards << assigning_card!(deck)
     prompt "Dealer's cards are now #{dealer_cards}"
     prompt"Dealer's total is now #{total(dealer_cards)}"
   end
