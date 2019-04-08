@@ -94,22 +94,10 @@ end
 def find_at_risk_square(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
     brd.select { |k, v| line.include?(k) && v == INITIAL_MARKER }.keys.first
-  else
-    nil
   end
 end
 
-def computer_offense_move(brd,marker)
-  square = nil
-  WINNING_LINES.each do |line|
-    square = find_at_risk_square(line, brd, marker)
-    break if square
-  end
-  square
-end  
-
-
-def computer_defense_move(brd,marker)
+def computer_offense_defense_move(brd, marker)
   square = nil
   WINNING_LINES.each do |line|
     square = find_at_risk_square(line, brd, marker)
@@ -117,12 +105,11 @@ def computer_defense_move(brd,marker)
   end
   square
 end
-
 
 def computer_places_piece(brd)
-  square = computer_offense_move(brd,COMPUTER_MARKER)
+  square = computer_offense_defense_move(brd, COMPUTER_MARKER)
   if !square
-    square = computer_defense_move(brd, PLAYER_MARKER)
+    square = computer_offense_defense_move(brd, PLAYER_MARKER)
   end
   if !square
     if empty_squares(brd).include?(5)
@@ -150,7 +137,7 @@ def board_full?(brd)
   empty_squares(brd).empty?
 end
 
-def detect_winnder(brd)
+def detect_winner(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 3
       return "Player"
@@ -162,7 +149,7 @@ def detect_winnder(brd)
 end
 
 def someone_won?(brd)
-  !!detect_winnder(brd)
+  !!detect_winner(brd)
 end
 
 def display_current_score(scores)
@@ -207,8 +194,8 @@ loop do # main game loop
   display_board(board)
 
   if someone_won?(board)
-    prompt "#{detect_winnder(board)} won!"
-    scoring[detect_winnder(board)] += 1
+    prompt "#{detect_winner(board)} won!"
+    scoring[detect_winner(board)] += 1
   else
     prompt "It's a tie!"
   end
