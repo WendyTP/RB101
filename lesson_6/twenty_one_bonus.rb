@@ -1,5 +1,5 @@
 # Assignment : Twenty-One Bonus
-# def assgning_card : to de-compose -- mutation?
+
 =begin
 High level pseudo-code:
   1. Initialize cards
