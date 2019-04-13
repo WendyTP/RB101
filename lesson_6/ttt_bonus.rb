@@ -18,7 +18,7 @@ def clear_terminal
 end
 
 def welcome
-  "Welcome to tic tac toe!
+  prompt "Welcome to tic tac toe!
   The first to score #{WINNING_POINTS} points win.
   Let's begin!"
 end
@@ -123,10 +123,10 @@ def computer_places_piece(brd)
   end
   if !square
     square = if empty_squares(brd).include?(5)
-                5
-              else
-                empty_squares(brd).sample
-              end
+               5
+             else
+               empty_squares(brd).sample
+             end
   end
   brd[square] = COMPUTER_MARKER
 end
@@ -161,7 +161,7 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
-def update_score(scores,brd)
+def update_score(scores, brd)
   scores[detect_winner(brd)] += 1
 end
 
@@ -171,7 +171,7 @@ end
 
 def display_tie
   prompt "It's a tie!"
-end  
+end
 
 def display_current_score(scores)
   scores.each do |person, score|
@@ -181,22 +181,21 @@ end
 
 def match_winner(scores)
   if scores["Player"] >= WINNING_POINTS
-    "Player"
+    return "Player"
   elsif scores["Computer"] >= WINNING_POINTS
-    "Computer"
-  else
-    nil  
+    return "Computer"
   end
+  nil
 end
 
 def display_match_winner(scores)
-  prompt "#{match_winner(scores)} reaches #{WINNING_POINTS} wins first! 
+  prompt "#{match_winner(scores)} reaches #{WINNING_POINTS} wins first!
   Game over!"
 end
 
 def valid_playe_again_answer?(answer)
   answer == "y" || answer == "n"
-end  
+end
 
 def play_again_answer
   answer = ""
@@ -214,7 +213,7 @@ def display_goodbye
 end
 
 clear_terminal
-prompt "#{welcome}"
+welcome
 scoring = { "Player" => 0, "Computer" => 0 }
 
 sleep(3)
@@ -228,14 +227,13 @@ loop do # main game loop
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
     break if someone_won?(board) || board_full?(board)
-    
   end
 
   display_board(board)
 
   if someone_won?(board)
     display_round_winner(board)
-    update_score(scoring,board)
+    update_score(scoring, board)
   else
     display_tie
   end
