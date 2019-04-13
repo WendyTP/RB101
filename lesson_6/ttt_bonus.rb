@@ -1,5 +1,4 @@
 # tic tac toe bonus features
-
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9],
                  [1, 4, 7], [2, 5, 8], [3, 6, 9],
                  [1, 5, 9], [3, 5, 7]]
@@ -8,14 +7,25 @@ INITIAL_MARKER = " "
 PLAYER_MARKER = "X"
 COMPUTER_MARKER = "O"
 PLAYING_ORDERS = ["Player", "Compuer", "Choose"]
+WINNING_POINTS = 5
 
 def prompt(message)
   puts "=> #{message}"
 end
 
+def clear_terminal
+  system('clear') || system('cls')
+end
+
+def welcome
+  "Welcome to tic tac toe!
+  The first to score #{WINNING_POINTS} points win.
+  Let's begin!"
+end
+
 # rubocop:disable Metrics/AbcSize
 def display_board(brd)
-  system "clear"
+  clear_terminal
   puts "You are #{PLAYER_MARKER}, the computer is #{COMPUTER_MARKER}"
   puts ""
   puts "     |     |"
@@ -112,11 +122,11 @@ def computer_places_piece(brd)
     square = computer_offense_defense_move(brd, PLAYER_MARKER)
   end
   if !square
-    if empty_squares(brd).include?(5)
-      square = 5
-    else
-      square = empty_squares(brd).sample
-    end
+    square = if empty_squares(brd).include?(5)
+                5
+              else
+                empty_squares(brd).sample
+              end
   end
   brd[square] = COMPUTER_MARKER
 end
@@ -129,8 +139,7 @@ def place_piece!(brd, current_player)
 end
 
 def alternate_player(current_player)
-  return "Computer" if current_player == "Player"
-  "Player"
+  current_player == "Player" ? "Computer" : "Player"
 end
 
 def board_full?(brd)
@@ -152,33 +161,63 @@ def someone_won?(brd)
   !!detect_winner(brd)
 end
 
+def update_score(scores,brd)
+  scores[detect_winner(brd)] += 1
+end
+
+def display_round_winner(brd)
+  prompt "#{detect_winner(brd)} won!"
+end
+
+def display_tie
+  prompt "It's a tie!"
+end  
+
 def display_current_score(scores)
   scores.each do |person, score|
     prompt"#{person} current score is #{score}"
   end
 end
 
-def first_reached_5_wins(scores)
-  if scores["Player"] >= 5
+def match_winner(scores)
+  if scores["Player"] >= WINNING_POINTS
     "Player"
-  elsif scores["Computer"] >= 5
+  elsif scores["Computer"] >= WINNING_POINTS
     "Computer"
+  else
+    nil  
   end
-  nil
 end
+
+def display_match_winner(scores)
+  prompt "#{match_winner(scores)} reaches #{WINNING_POINTS} wins first! 
+  Game over!"
+end
+
+def valid_playe_again_answer?(answer)
+  answer == "y" || answer == "n"
+end  
 
 def play_again_answer
   answer = ""
   loop do
     prompt "Play again? (y or n)"
     answer = gets.chomp.downcase
-    break if answer == "y" || answer == "n"
+    break if valid_playe_again_answer?(answer)
     prompt "Invalid answer.Type 'y' to continue or 'n' to exit."
   end
   answer
 end
 
+def display_goodbye
+  prompt "Thanks for playing! Goodbye!"
+end
+
+clear_terminal
+prompt "#{welcome}"
 scoring = { "Player" => 0, "Computer" => 0 }
+
+sleep(3)
 
 loop do # main game loop
   board = initialize_board
@@ -189,25 +228,26 @@ loop do # main game loop
     place_piece!(board, current_player)
     current_player = alternate_player(current_player)
     break if someone_won?(board) || board_full?(board)
+    
   end
 
   display_board(board)
 
   if someone_won?(board)
-    prompt "#{detect_winner(board)} won!"
-    scoring[detect_winner(board)] += 1
+    display_round_winner(board)
+    update_score(scoring,board)
   else
-    prompt "It's a tie!"
+    display_tie
   end
 
   display_current_score(scoring)
 
-  if first_reached_5_wins(scoring)
-    prompt "#{first_reached_5_wins(scoring)} reaches 5 wins first! Game over!"
+  if match_winner(scoring)
+    display_match_winner(scoring)
     break
   end
 
   break if play_again_answer == "n"
 end
 
-prompt "Thanks for playing! Goodbye!"
+display_goodbye
